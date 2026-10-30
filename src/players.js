@@ -1,10 +1,13 @@
-import { Profiler } from "react";
-import { getProfiles, saveCurrenPlayer, saveProfiles } from "./storage.js";
+
+import { getProfiles, saveProfiles } from "./storage.js";
+
 export function validateNickname(nickname){
     const regx = /^[A-Za-z0-9]{3,15}$/;
     if (!nickname || !regex.test(nickname)){
-        return{ valid: false, message : 'le pseudo doit contenir entre 3 et 15 caractères(lettres et chiffres uniquement).'};
-    }
+        return{ valid: false,
+             message : 'le pseudo doit contenir entre 3 et 15 caractères(lettres et chiffres uniquement).'};
+    };
+
     const profiles= getProfiles();
     const exist = profiles.some(p=> p.nickname .tolowerCase()=== nickname.tolowerCase());
     if (exist){
@@ -26,6 +29,6 @@ export function createPlayer(nickname,avatar = '👤'){
     };
     const profiles=getProfiles();
     profiles.push(newPlayer);
-    saveProfiles(Profiler);
+    saveProfiles(profiles);
     return newPlayer;
 }

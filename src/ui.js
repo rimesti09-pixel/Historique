@@ -1,4 +1,5 @@
 import { getCurrentPlayer } from "./storage";
+
 export function renderCurrentPlayer() {
     const displayElement = document.getElementById('current-player-display');
     if(!displayElement) return;
