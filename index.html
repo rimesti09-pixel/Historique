@@ -38,16 +38,28 @@
 
 <label class = "block text-xs text-slate-400 mb-1">Avatar</label>
 <select id =" avatar-select" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white text-sm">
-    <option value="👤">👤 Normal</option>
-    <option value="👑">👑 Empereur</option>
-    <option value="🗡️">🗡️ Citoyen</option>
+    <option value="👤"> 👤Normal</option>
+    <option value="👑">👑Empereur</option>
+    <option value="🗡️"> 🗡️Citoyen</option>
     <option value="⛓️">⛓️ Esclave</option>
     <option value="🐉">🐉 Dragon</option>
-
 </select>
 </div>
+<div id ="form-error" class="hidden text-red-400 text-xs bg-red-500/10 p-2 rounded border border-red-500/20"></div>
+<button type="submit" id="save-profile-btn"
+class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 rounded transition text-sm">
+Enregistrer le Profil
+</button>
+</form>
 
 
+<div class ="border-t border-slate-700 pt-4">
+    <h4 class="text-sm font-semibold text-slate-300 mb-3">Profiles existants</h4>
+</div id ="profils-list" class ="space-y-2 max-h-48 overflow-y-auto pr-1">
+         </div>
+       </div>
+    </div>
+</div>
 <script type="module" scr="./scr/main.js"></script>
 </body>
 
