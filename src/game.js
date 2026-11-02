@@ -11,3 +11,19 @@ if(
 }
 return"défaite";
 }
+export function gestInitialHand(camp){
+    if(camp ==='Emperur'){
+          return[ 'Empereur','Citoyen','Citoyen','Citoyen','Citoyen',];
+    }else {
+         return[ 'Esclave','Citoyen','Citoyen','Citoyen','Citoyen',];
+    }
+}
+export function getCampForRound(roundNumber){
+    if(roundNumber<=3)return 'Empereur';
+    if (roundNumber<=6)return'Esclave';
+    if(roundNumber<=9)return'Empereur';
+    return 'Esclave';
+}
+export function getPointsForWin(camp){
+    return camp === 'Empereur'? 1:5;
+}
