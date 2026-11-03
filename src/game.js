@@ -27,3 +27,14 @@ export function getCampForRound(roundNumber){
 export function getPointsForWin(camp){
     return camp === 'Empereur'? 1:5;
 }
+export function removeCardsAfterDuel(playerHand,computerHand,playerCardIndex,computerCardIndex){
+const newPlayerHand = [...playerHand];
+const newcomputerHand =[...computerHand];
+newPlayerHand.splice(playerCardIndex,1)
+newcomputerHand.splice(computerCardIndex,1)
+
+return{
+    playerHand: newPlayerHand,
+    computerHand: computerHand
+};
+}
