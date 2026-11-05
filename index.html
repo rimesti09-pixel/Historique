@@ -8,14 +8,17 @@
     <link href="src/output.css" rel="stylesheet">
 </head>
 
-<body class="bg-slate-900 text-white min-h-screen flex flex-col justify-between"></body>
-<header class=" bg-slacte-800 p-4 shdow-md flex justify-between itemes-centre">
-    <h1 class="text-xl font-bold text-amber-400">Empereur, Citoyen, Esclave
-        <div id=" current-player-display" class="text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300">
-            Aucun joueur sélectionné
+<body class="bg-slate-900 text-white min-h-screen flex flex-col justify-between">
+
+    <header class=" bg-slacte-800 p-4 shdow-md flex justify-between itemes-centre">
+          <h1 class="text-xl font-bold text-amber-400">Empereur, Citoyen, Esclave</h1>
+           <div id=" current-player-display" class="text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300">
+                 Aucun joueur sélectionné
         </div>
 </header>
-<main class="container mx-auto p-4 flex-1 flex flex-col items-center justify-center">
+
+   <main class="container mx-auto p-4 flex-1 flex flex-col items-center justify-center">
+
     <div class="text-center">
         <h2 class="text-2xl font-semibold mb-4">Bienvenue au Club de Jeux</h2>
         <p class="text-slate-400 mb-6">Gérez vos profils et lancez vos parties !</p>
@@ -26,41 +29,58 @@
     </div>
 </main>
 <footer class="bg-amber-800 p-3 text-center text-xs text-slate-500">
-
+      Projet Club de Cartes      
 </footer>
-<div id = "profiles-modal" class = "espace-y-4 mb-6">
-    <div class = "bg-slate-800 border border-slate-700 rounded-xl max-w-md w-full p-6 shadow-2xl" >
-    </div class = "flex justify-between items-center mb-4" >
-  <h3 class ="text-xl font-bold text-amber-400">GESTION DES PROFILES</h3>
-  <button id = "form-error" class = "nickname-input" class="w-full bg-slate-700 rounded p-2 text-sm focus:outline-none focus:border-amber-500" placeholder="Ex:Yanis07"> </button>
-</div> 
- </div>
 
-<label class = "block text-xs text-slate-400 mb-1">Avatar</label>
-<select id =" avatar-select" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white text-sm">
-    <option value="👤"> 👤Normal</option>
-    <option value="👑">👑Empereur</option>
-    <option value="🗡️"> 🗡️Citoyen</option>
-    <option value="⛓️">⛓️ Esclave</option>
-    <option value="🐉">🐉 Dragon</option>
+<div id ="profiles-modal" class="hidden fixed inset-0 bg-black/70 items-center justify-center p-4 z-50">
+    <div class = "bg-slate-800 border border-slate-700 rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4" >
+
+        <div class = "flex justify-between items-center mb-4" >
+             <h3 class ="text-xl font-bold text-amber-400">GESTION DES PROFILES</h3>
+             <button id = "close-profiles-btn" class = "text-slate-400  hover:text-white font-bold text-lg" >X</button>
+ </div> 
+
+<form id = "profile-form" class ="space-y-4 mb-6">
+     <input type = "hidden" id="player-id" value="">
+
+<div>
+    <label classe="block text-xs text-slate-400 mb-1">Pseudo(3 à 15 caractères,lettres et chiffres)</label>
+    <input type ="text" id="nickname-input" required
+    classe="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white text-sm focus:outliune-none focus:border-amber-500"
+    placeholder="Ex: Yanis07">
+ <p id ="form-error" class = "text-red-400 text-xs mt-1 hidden"></p>
+</div>
+
+
+<div>
+
+      <label class = "block text-xs text-slate-400 mb-1">Avatar</label>
+     <select id =" avatar-select" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white text-sm">
+          <option value="👤"> 👤Normal</option>
+          <option value="👑">👑Empereur</option>
+          <option value="🗡️"> 🗡️Citoyen</option>
+          <option value="⛓️">⛓️ Esclave</option>
+          <option value="🐉">🐉 Dragon</option>
 </select>
 </div>
-<div id ="form-error" class="hidden text-red-400 text-xs bg-red-500/10 p-2 rounded border border-red-500/20"></div>
+
 <button type="submit" id="save-profile-btn"
-class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 rounded transition text-sm">
-Enregistrer le Profil
-</button>
+    class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 rounded transition text-sm">
+    Enregistrer le Profil
+   </button>
 </form>
 
 
 <div class ="border-t border-slate-700 pt-4">
     <h4 class="text-sm font-semibold text-slate-300 mb-3">Profiles existants</h4>
-</div id ="profils-list" class ="space-y-2 max-h-48 overflow-y-auto pr-1">
+<div id ="profils-list" class ="space-y-2 max-h-48 overflow-y-auto pr-1">
          </div>
        </div>
+
     </div>
 </div>
-<script type="module" scr="./scr/main.js"></script>
-</body>
 
+   <script type="module" src="./src/main.js"></script>
+</body>
+ 
 </html>

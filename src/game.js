@@ -29,12 +29,12 @@ export function getPointsForWin(camp){
 }
 export function removeCardsAfterDuel(playerHand,computerHand,playerCardIndex,computerCardIndex){
 const newPlayerHand = [...playerHand];
-const newcomputerHand =[...computerHand];
+const newComputerHand =[...computerHand];
 newPlayerHand.splice(playerCardIndex,1)
-newcomputerHand.splice(computerCardIndex,1)
+newComputerHand.splice(computerCardIndex,1)
 
 return{
     playerHand: newPlayerHand,
-    computerHand: computerHand
+    computerHand: newComputerHand
 };
 }
