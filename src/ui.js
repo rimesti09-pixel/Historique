@@ -15,3 +15,39 @@ export function renderCurrentPlayer() {
     
     }
 }
+export function renderProfilesList(profiles,currentPlayerId,onSlect,onEdit,onDelete){
+    const listContainer=document.getElementById('profiles-list ')
+    if (!listContainer) return;
+    if(profiles.length===0){
+        listContainer.innerHTML=`<p class="text-xs text-slate-400 text-center py-2">Aucun profil pur le moment.</p>`;
+        return
+    }
+}listContainer.innerHTML=profiles.map(p=>{
+    const isSelected= p.id === currentPlayerId;
+    return`
+    <div class="flex items-center justify-between bg-slate-900 border ${isSelected ? 'border-amber-500': 'border-slate-700'}p-2.5 rounded-lg text-xs">
+       <div class ="flex items-center gap-2">
+       <span class="text-base">${p.avatar}</span>
+       <div>
+         <div class="font-bold text-white">${p.nickname}</div>
+         <div class="text-[10px] text-slate-400">Parties :${p.gamesPlayed || 0}</div>
+     </div>   
+   </div>    
+       <div class ="flex items-center gap-1">
+       <button data-action = "select" data-id ="${p.id}" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-1 rounded transition curcor-pointer font-medium">
+           ${isSelected? 'Actif': 'choisir'}
+       </button>
+     <button data-action="edit" data-id="${p.id}" class="text-slate-400 hover:text-white px-1.5 py-1 cursor-pointer" title="Modifier">✏️</button>
+     <button data-action="delete" data-id="${p.id}" class="text-red-400 hover:text-red-300 px-1.5 py-1 cursor-pointer" title="Supprimer">🗑️</button>
+    </div>
+</div>
+    `;
+}).join('');
+   
+   listContainer.querySelectorAll('button').forEach(btn => {
+const action =btn.dataset.action;
+const id = btn . dataset.id;
+if(action === 'select')btn.onclick =()=> onselect(id);
+if(action === 'edit')btn.onclick =()=> onEdit(id);
+if(action=== 'delete')btn.onclick = ()=>onDelete(id);
+   });
