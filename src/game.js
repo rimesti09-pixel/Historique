@@ -11,8 +11,8 @@ if(
 }
 return"défaite";
 }
-export function gestInitialHand(camp){
-    if(camp ==='Emperur'){
+export function getInitialHand(camp){
+    if(camp ==='Empereur'){
           return[ 'Empereur','Citoyen','Citoyen','Citoyen','Citoyen',];
     }else {
          return[ 'Esclave','Citoyen','Citoyen','Citoyen','Citoyen',];
