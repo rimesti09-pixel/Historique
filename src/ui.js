@@ -9,17 +9,14 @@ export function renderCurrentPlayer() {
 
     const currentPlayer = getCurrentPlayer();
     if (currentPlayer) {
-        displayElement.textContent =
-        `${currentPlayer.avatar} ${currentPlayer.nickname}`;
+        displayElement.textContent = `${currentPlayer.avatar} ${currentPlayer.nickname}`;
 
-        displayElement.className =
-         "text-sm bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full font-medium";
+        displayElement.className ="text-sm bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full font-medium";
 
     }else{
         displayElement.textContent = "Aucun joueur sélectionné";
 
-        displayElement.className =
-         "text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300";
+        displayElement.className = "text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300";
     
     }
 }
@@ -35,51 +32,49 @@ export function renderProfilesList(
     if (!listContainer) return;
 
     if(profiles.length===0){
-        listContainer.innerHTML=`
-        <p class="text-xs text-slate-400 text-center py-2">
-        Aucun profil pur le moment.</p>
-        `;
+        listContainer.innerHTML=` <p class="text-xs text-slate-400 text-center py-2">  Aucun profil pur le moment.</p> `;
         return
     }
 
-   listContainer.innerHTML=profiles.map(p=>{
+   listContainer.innerHTML=profiles.map(player=>{
 
-    const isSelected= p.id === currentPlayerId;
+    const isSelected= player.id === currentPlayerId;
+
     return`
     <div class="flex items-center justify-between bg-slate-900 border ${isSelected ? 'border-amber-500': 'border-slate-700'}p-2.5 rounded-lg text-xs">
 
        <div class ="flex items-center gap-2">
 
-       <span class="text-base">${p.avatar}</span>
+       <span class="text-base">${player.avatar}</span>
 
        <div>
-         <div class="font-bold text-white">${p.nickname}</div>
-         <div class="text-[10px] text-slate-400">Parties :${p.gamesPlayed || 0}</div>
+         <div class="font-bold text-white">${player.nickname}</div>
+         <div class="text-[10px] text-slate-400">Parties :${player.gamesPlayed || 0}</div>
      </div>   
    </div>    
        <div class ="flex items-center gap-1">
-       <button data-action = "select" data-id ="${p.id}" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-1 rounded transition curcor-pointer font-medium">
+       <button data-action = "select" data-id ="${player.id}" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-1 rounded transition curcor-pointer font-medium">
            ${isSelected? 'Actif': 'choisir'}
        </button>
-     <button data-action="edit" data-id="${p.id}" class="text-slate-400 hover:text-white px-1.5 py-1 cursor-pointer" title="Modifier">✏️</button>
-     <button data-action="delete" data-id="${p.id}" class="text-red-400 hover:text-red-300 px-1.5 py-1 cursor-pointer" title="Supprimer">🗑️</button>
+     <button data-action="edit" data-id="${player.id}" class="text-slate-400 hover:text-white px-1.5 py-1 cursor-pointer" title="Modifier">✏️</button>
+     <button data-action="delete" data-id="${player.id}" class="text-red-400 hover:text-red-300 px-1.5 py-1 cursor-pointer" title="Supprimer">🗑️</button>
     </div>
 </div>
     `;
 }).join('');
    
-   listContainer.querySelectorAll('button').forEach(btn => {
-const action =btn.dataset.action;
-const id = btn . dataset.id;
+   listContainer.querySelectorAll('button').forEach(button => {
+const action =button.dataset.action;
+const id = button . dataset.id;
 
 if(action === 'select'){
-    btn.onclick =()=> onSelect(id);
+    button.onclick =()=> onSelect(id);
 }
 if(action === 'edit'){
-    btn.onclick =()=> onEdit(id);
+    button.onclick =()=> onEdit(id);
 }
 if(action=== 'delete'){
-    btn.onclick = ()=>onDelete(id);
+    button.onclick = ()=>onDelete(id);
    }
    });
 }
