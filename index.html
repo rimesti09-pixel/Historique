@@ -10,9 +10,9 @@
 
 <body class="bg-slate-900 text-white min-h-screen flex flex-col justify-between">
 
-    <header class=" bg-slacte-800 p-4 shdow-md flex justify-between itemes-centre">
+    <header class=" bg-slate-800 p-4 shadow-md flex justify-between items-center">
           <h1 class="text-xl font-bold text-amber-400">Empereur, Citoyen, Esclave</h1>
-           <div id=" current-player-display" class="text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300">
+           <div id="current-player-display" class="text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300">
                  Aucun joueur sélectionné
         </div>
 </header>
@@ -44,9 +44,13 @@
      <input type = "hidden" id="player-id" value="">
 
 <div>
-    <label classe="block text-xs text-slate-400 mb-1">Pseudo(3 à 15 caractères,lettres et chiffres)</label>
-    <input type ="text" id="nickname-input" required
-    classe="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white text-sm focus:outliune-none focus:border-amber-500"
+    <label class="block text-xs text-slate-400 mb-1">
+        Pseudo(3 à 15 caractères,lettres et chiffres)
+    </label>
+    <input type ="text"
+     id="nickname-input" 
+     required
+    class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white text-sm focus:outline-none focus:border-amber-500"
     placeholder="Ex: Yanis07">
  <p id ="form-error" class = "text-red-400 text-xs mt-1 hidden"></p>
 </div>
@@ -55,7 +59,7 @@
 <div>
 
       <label class = "block text-xs text-slate-400 mb-1">Avatar</label>
-     <select id =" avatar-select" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white text-sm">
+     <select id ="avatar-select" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white text-sm">
           <option value="👤"> 👤Normal</option>
           <option value="👑">👑Empereur</option>
           <option value="🗡️"> 🗡️Citoyen</option>
@@ -73,14 +77,14 @@
 
 <div class ="border-t border-slate-700 pt-4">
     <h4 class="text-sm font-semibold text-slate-300 mb-3">Profiles existants</h4>
-<div id ="profils-list" class ="space-y-2 max-h-48 overflow-y-auto pr-1">
+<div id ="profiles-list" class ="space-y-2 max-h-48 overflow-y-auto pr-1">
          </div>
        </div>
 
     </div>
 </div>
 
-   <script type="module" src="./src/main.js"></script>
+   
 </body>
- 
+ <script type="module" src="./src/main.js"></script>
 </html>

@@ -13,5 +13,5 @@ export function getCurrentPlayer(){
     return data ? JSON.parse(data) : null;
 }
 export function saveCurrentPlayer(player){
-    localStorage.setItem(CURRENT_PLAYER_KEY, JSON.stringify(player))
+    localStorage.setItem(CURRENT_PLAYER_KEY, JSON.stringify(player));
 }

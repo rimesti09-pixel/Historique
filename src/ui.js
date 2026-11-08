@@ -1,33 +1,57 @@
-import { getCurrentPlayer } from "./storage";
+import { getCurrentPlayer } from "./storage.js";
 
 export function renderCurrentPlayer() {
-    const displayElement = document.getElementById('current-player-display');
+
+    const displayElement = document.getElementById(
+        'current-player-display'
+    );
     if(!displayElement) return;
 
     const currentPlayer = getCurrentPlayer();
     if (currentPlayer) {
-        displayElement.textContent ='${currentPlayer.avatar} ${currentPlayer.nickname}';
-        displayElement.className = "text-sm bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full font-medium";
+        displayElement.textContent =
+        `${currentPlayer.avatar} ${currentPlayer.nickname}`;
+
+        displayElement.className =
+         "text-sm bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full font-medium";
 
     }else{
         displayElement.textContent = "Aucun joueur sélectionné";
-        displayElement.className = "text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300";
+
+        displayElement.className =
+         "text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300";
     
     }
 }
-export function renderProfilesList(profiles,currentPlayerId,onSlect,onEdit,onDelete){
-    const listContainer=document.getElementById('profiles-list ')
+export function renderProfilesList(
+    profiles,
+    currentPlayerId,
+    onSelect,
+    onEdit,
+    onDelete
+   ){
+    const listContainer=document.getElementById('profiles-list')
+
     if (!listContainer) return;
+
     if(profiles.length===0){
-        listContainer.innerHTML=`<p class="text-xs text-slate-400 text-center py-2">Aucun profil pur le moment.</p>`;
+        listContainer.innerHTML=`
+        <p class="text-xs text-slate-400 text-center py-2">
+        Aucun profil pur le moment.</p>
+        `;
         return
     }
-}listContainer.innerHTML=profiles.map(p=>{
+
+   listContainer.innerHTML=profiles.map(p=>{
+
     const isSelected= p.id === currentPlayerId;
     return`
     <div class="flex items-center justify-between bg-slate-900 border ${isSelected ? 'border-amber-500': 'border-slate-700'}p-2.5 rounded-lg text-xs">
+
        <div class ="flex items-center gap-2">
+
        <span class="text-base">${p.avatar}</span>
+
        <div>
          <div class="font-bold text-white">${p.nickname}</div>
          <div class="text-[10px] text-slate-400">Parties :${p.gamesPlayed || 0}</div>
@@ -47,7 +71,15 @@ export function renderProfilesList(profiles,currentPlayerId,onSlect,onEdit,onDel
    listContainer.querySelectorAll('button').forEach(btn => {
 const action =btn.dataset.action;
 const id = btn . dataset.id;
-if(action === 'select')btn.onclick =()=> onselect(id);
-if(action === 'edit')btn.onclick =()=> onEdit(id);
-if(action=== 'delete')btn.onclick = ()=>onDelete(id);
+
+if(action === 'select'){
+    btn.onclick =()=> onSelect(id);
+}
+if(action === 'edit'){
+    btn.onclick =()=> onEdit(id);
+}
+if(action=== 'delete'){
+    btn.onclick = ()=>onDelete(id);
+   }
    });
+}
