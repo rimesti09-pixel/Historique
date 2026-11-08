@@ -1,15 +1,8 @@
-import { renderCurrentPlayer } from "./ui";
 
-document.addEventListener('DOMContentLoaded', () =>{
-    renderCurrentPlayer();
-});
-import { getCurrentPlayer,
-    getProfiles,
-    saveCurrenPlayer,
-     saveProfiles } from "./storage.js";
+
+import { getCurrentPlayer, getProfiles,  saveCurrenPlayer, saveProfiles } from "./storage.js";
 import {createPlayer, updatedPlayer}from"./players.js";
-import { renderCurrentPlayer,
-    renderProfilesList } from "./ui.js";
+import { renderCurrentPlayer,renderProfilesList } from "./ui.js";
 
 
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -25,9 +18,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const formError=document.getElementById('form-error');
 
     const playerIdInput = document.getElementById('player-id');
+    const saveBtn=document.getElementById('save-profile-btn');
 
-    renderCurrentPlayer();
+function resetForm (){
+    profilForm.reset();
+    playerIdInput.value="";
+    saveBtn.textContent="Enregistrer le profil";
+    formError.textContent="";
+    formError.classList.add("hidden")
 
+}
     function refreshProfiles(){
         
         const profiles = getProfiles();
@@ -52,9 +52,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 if (player) {
                     nicknameInput.value = player.nickname;
                     avatarSelect.value = player.avatar;
-                    playerIdInput.value = player.id
-
+                    playerIdInput.value = player.id;
                     saveBtn.textContent="Modifier le profil";
+                    formError.textContent="";
+                    formError.classList.add("hidden");
                     
                 }
             },
@@ -63,58 +64,69 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 if(!confirm("Voulez-vous vraiment supprimer ce profil ?")){
                     return;
                 }
-
+                    const updatedProfiles= getCurrentPlayer().filter((player)=>player.id !== id);
                     saveProfiles(updatedProfiles);
 
                     const currentPlayer=getCurrentPlayer();
-
-                    if(currentPlayer&&currentPlayer.id===id){
+                    if (currentPlayer && currentPlayer.id===id) {
                         saveCurrenPlayer(null);
                     }
+                    if (playerIdInput.value === id){
+                        resetForm();
+                    }
                         renderCurrentPlayer();
-                
-                    refreshProfiles();
+                        refreshProfiles();
                 
             }
 
         );
   
     }
-        openBtn.onclick=()=>{
+        openBtn.addEventListener("click",()=> {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         refreshProfiles();
-        };
+        });
     
 
-    closeBtn.onclick = () =>{
+    closeBtn.addEventListener("click",() =>{
         modal.classList.add("hidden");
         modal.classList.remove("flex");
-    };
+    });
  
- profilForm.add("sumbit",(e)=>{
-    e.preventDefault();
+ profilForm.addEventListener("sumbit",(event)=>{
+    event.preventDefault();
+
     const nickname=nicknameInput.value.trim();
     const avatar = avatarSelect.value;
     const playerId = playerIdInput.value;
 
+    formError.textContent="";
     formError.classList.add("hidden");
 
     try{
         if(playerId){
             updatedPlayer(playerId,nickname,avatar);
-        }else{
+        const currentPlayer=getCurrentPlayer();
+        if(currentPlayer&&getProfiles.id === playerId){
+
+        const updatedCurrentPlayer=getProfiles().find((player)=>player.id===playerId);
+        if(updatedCurrentPlayer){
+            saveCurrenPlayer(updatedCurrentPlayer);
+        }
+    }
+}else{
             createPlayer(nickname,avatar);
         }
         
-        profilForm.reset();
-        playerIdInput.value = "";
-        saveBtn.textContent="Enregistrer le Profil";
-    
+        resetForm();
+        renderCurrentPlayer();
         refreshProfiles();
     }catch(error){
         formError.textContent = error.message;
         formError.classList.remove("hidden");
     }
  });
+
+    renderCurrentPlayer();
 });
