@@ -32,7 +32,7 @@ export function renderProfilesList(
     if (!listContainer) return;
 
     if(profiles.length===0){
-        listContainer.innerHTML=` <p class="text-xs text-slate-400 text-center py-2">  Aucun profil pur le moment.</p> `;
+        listContainer.innerHTML=` <p class="text-xs text-slate-400 text-center py-2">  Aucun profil pour le moment.</p> `;
         return
     }
 
@@ -53,8 +53,8 @@ export function renderProfilesList(
      </div>   
    </div>    
        <div class ="flex items-center gap-1">
-       <button data-action = "select" data-id ="${player.id}" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-1 rounded transition curcor-pointer font-medium">
-           ${isSelected? 'Actif': 'choisir'}
+       <button data-action = "select" data-id ="${player.id}" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-1 rounded transition cursor-pointer font-medium">
+           ${isSelected? 'Actif': 'Choisir'}
        </button>
      <button data-action="edit" data-id="${player.id}" class="text-slate-400 hover:text-white px-1.5 py-1 cursor-pointer" title="Modifier">✏️</button>
      <button data-action="delete" data-id="${player.id}" class="text-red-400 hover:text-red-300 px-1.5 py-1 cursor-pointer" title="Supprimer">🗑️</button>
