@@ -1,89 +1,87 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empereur, Citoyen, Esclave</title>
-    <link href="src/output.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Empereur, Citoyen, Esclave</title>
+  <link href="./src/output.css" rel="stylesheet">
 </head>
+<body class="bg-slate-900 text-white min-h-screen flex flex-col">
+  <header class="bg-slate-800 p-4 shadow-md flex flex-wrap gap-3 justify-between items-center">
+    <h1 class="text-xl font-bold text-amber-400">♛ Empereur, Citoyen, Esclave</h1>
+    <div id="current-player-display" class="text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300">Aucun joueur sélectionné</div>
+  </header>
 
-<body class="bg-slate-900 text-white min-h-screen flex flex-col justify-between">
+  <main class="container mx-auto p-4 flex-1 w-full">
+    <section class="text-center py-6">
+      <h2 class="text-2xl font-semibold mb-2">Bienvenue au Club de Jeux</h2>
+      <p class="text-slate-400">Gérez vos profils, jouez 12 manches et consultez vos résultats.</p>
+    </section>
 
-    <header class=" bg-slate-800 p-4 shadow-md flex justify-between items-center">
-          <h1 class="text-xl font-bold text-amber-400">Empereur, Citoyen, Esclave</h1>
-           <div id="current-player-display" class="text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300">
-                 Aucun joueur sélectionné
+    <nav class="app-tabs" aria-label="Navigation principale">
+      <button class="app-tab active" data-view="game">⚔ Jouer</button>
+      <button class="app-tab" data-view="players">♙ Profils</button>
+      <button class="app-tab" data-view="history">▤ Historique</button>
+    </nav>
+
+    <section id="view-game" class="app-view">
+      <div id="game-no-player" class="app-panel text-center">
+        <h3 class="text-xl font-bold text-amber-400 mb-2">Choisissez votre joueur</h3>
+        <p class="text-slate-400 mb-4">Vous devez sélectionner un profil avant de commencer une partie.</p>
+        <button class="app-button" data-go="players">Gérer les profils</button>
+      </div>
+      <div id="game-board" hidden>
+        <div class="app-scoreboard app-panel">
+          <div><span class="app-label">VOUS</span><strong id="player-score">0</strong><small id="player-name">Joueur</small></div>
+          <div><span class="app-label">MANCHE</span><strong><span id="manche">1</span><i>/12</i></strong><small id="group-label">Groupe 1/4</small></div>
+          <div><span class="app-label">ORDINATEUR</span><strong id="computer-score">0</strong><small>Adversaire</small></div>
         </div>
-</header>
+        <div class="app-status">
+          <div class="app-panel"><span class="app-label">VOTRE CAMP</span><strong id="player-camp">Empereur</strong></div>
+          <div class="app-panel"><span class="app-label">PREMIER À JOUER</span><strong id="first-player">Vous</strong></div>
+          <div class="app-panel"><span class="app-label">DUEL</span><strong id="duel-count">1 / 5</strong></div>
+        </div>
+        <div class="app-panel app-arena">
+          <div class="app-side"><span class="app-label">ORDINATEUR</span><div id="computer-card" class="app-playing-card back">?</div><p id="computer-choice" class="text-slate-400 text-sm mt-2">Carte cachée</p></div>
+          <div class="app-versus">VS</div>
+          <div class="app-side"><span class="app-label">VOTRE MAIN</span><div id="player-cards" class="app-hand"></div></div>
+          <p id="result" class="app-result" role="status" aria-live="polite">Choisissez une carte pour lancer le duel.</p>
+          <p id="round-notice" class="text-slate-400 text-sm text-center">En cas d'égalité, les deux cartes sont retirées et le duel continue.</p>
+          <button id="next-manche" class="app-button" hidden>Manche suivante →</button>
+          <button id="restart" class="app-button" hidden>Rejouer une partie ↻</button>
+        </div>
+      </div>
+    </section>
 
-   <main class="container mx-auto p-4 flex-1 flex flex-col items-center justify-center">
+    <section id="view-players" class="app-view" hidden>
+      <div class="app-section-title"><h2 class="text-xl font-bold text-amber-400">Gestion des profils</h2><p class="text-slate-400">Créez et gérez les membres du club.</p></div>
+      <div class="app-columns">
+        <form id="profile-form" class="app-panel app-form" novalidate>
+          <h3 id="form-title" class="font-bold text-lg text-amber-400">Créer un profil</h3>
+          <input type="hidden" id="player-id">
+          <label for="nickname-input">Pseudo <small>(3 à 15 lettres ou chiffres)</small></label>
+          <input id="nickname-input" type="text" minlength="3" maxlength="15" autocomplete="off" placeholder="Ex. Yanis07" required>
+          <label for="avatar-select">Avatar</label>
+          <select id="avatar-select"><option value="👤">👤 Normal</option><option value="👑">👑 Empereur</option><option value="🗡️">🗡️ Citoyen</option><option value="⛓️">⛓️ Esclave</option><option value="🐉">🐉 Dragon</option></select>
+          <p id="form-error" class="app-error" role="alert" hidden></p>
+          <div class="app-form-actions"><button id="save-profile-btn" class="app-button" type="submit">Enregistrer le profil</button><button id="cancel-edit" class="app-button secondary" type="button" hidden>Annuler</button></div>
+        </form>
+        <div class="app-panel"><div class="app-list-heading"><h3 class="font-bold">Profils existants</h3><span id="profile-count" class="app-count">0</span></div><div id="profiles-list" class="app-list"></div></div>
+      </div>
+    </section>
 
-    <div class="text-center">
-        <h2 class="text-2xl font-semibold mb-4">Bienvenue au Club de Jeux</h2>
-        <p class="text-slate-400 mb-6">Gérez vos profils et lancez vos parties !</p>
-        <button id="open-profiles-btn"
-            class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2 rounded-lg transition">
-            Gérer les Profils
-        </button>
-    </div>
-</main>
-<footer class="bg-amber-800 p-3 text-center text-xs text-slate-500">
-      Projet Club de Cartes      
-</footer>
-
-<div id ="profiles-modal" class="hidden fixed inset-0 bg-black/70 items-center justify-center p-4 z-50">
-    <div class = "bg-slate-800 border border-slate-700 rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4" >
-
-        <div class = "flex justify-between items-center mb-4" >
-             <h3 class ="text-xl font-bold text-amber-400">GESTION DES PROFILES</h3>
-             <button id = "close-profiles-btn" class = "text-slate-400  hover:text-white font-bold text-lg" >X</button>
- </div> 
-
-<form id = "profile-form" class ="space-y-4 mb-6">
-     <input type = "hidden" id="player-id" value="">
-
-<div>
-    <label class="block text-xs text-slate-400 mb-1">
-        Pseudo(3 à 15 caractères,lettres et chiffres)
-    </label>
-    <input type ="text"
-     id="nickname-input" 
-     required
-    class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white text-sm focus:outline-none focus:border-amber-500"
-    placeholder="Ex: Yanis07">
- <p id ="form-error" class = "text-red-400 text-xs mt-1 hidden"></p>
-</div>
-
-
-<div>
-
-      <label class = "block text-xs text-slate-400 mb-1">Avatar</label>
-     <select id ="avatar-select" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white text-sm">
-          <option value="👤"> 👤Normal</option>
-          <option value="👑">👑Empereur</option>
-          <option value="🗡️"> 🗡️Citoyen</option>
-          <option value="⛓️">⛓️ Esclave</option>
-          <option value="🐉">🐉 Dragon</option>
-</select>
-</div>
-
-<button type="submit" id="save-profile-btn"
-    class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 rounded transition text-sm">
-    Enregistrer le Profil
-   </button>
-</form>
-
-
-<div class ="border-t border-slate-700 pt-4">
-    <h4 class="text-sm font-semibold text-slate-300 mb-3">Profiles existants</h4>
-<div id ="profiles-list" class ="space-y-2 max-h-48 overflow-y-auto pr-1">
-         </div>
-       </div>
-
-    </div>
-</div>
-
-    <script type="module" src="./src/main.js"></script>
+    <section id="view-history" class="app-view" hidden>
+      <div class="app-section-title"><h2 class="text-xl font-bold text-amber-400">Historique des parties</h2><p class="text-slate-400">Retrouvez toutes les parties enregistrées.</p></div>
+      <div class="app-panel app-filters">
+        <label>Rechercher un joueur<input id="history-search" type="search" placeholder="Pseudo..."></label>
+        <label>Résultat<select id="history-result"><option value="tous">Tous les résultats</option><option value="victoire">Victoires</option><option value="défaite">Défaites</option><option value="égalité">Égalités</option></select></label>
+        <label>Période<select id="history-date"><option value="tout">Toutes les dates</option><option value="aujourd-hui">Aujourd'hui</option><option value="7-jours">7 derniers jours</option></select></label>
+      </div>
+      <div class="app-panel"><div class="app-list-heading"><h3 class="font-bold">Parties récentes</h3><span id="history-count" class="app-count">0</span></div><div id="history-list" class="app-list"></div></div>
+    </section>
+  </main>
+  <footer class="bg-amber-800 p-3 text-center text-xs text-slate-200">Projet Club de Cartes · Empereur, Citoyen, Esclave</footer>
+  <script type="module" src="./src/main.js"></script>
 </body>
 </html>

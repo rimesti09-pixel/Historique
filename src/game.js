@@ -1,40 +1,19 @@
-export function duel(playerCard, computerCard){
-if (playerCard===computerCard){
-    return"égalité";
-}
-if(
-    (playerCard==='Empereur'&&computerCard==='Citoyen')||
-    (playerCard === 'Citoyen'&& computerCard === 'Esclave') ||
-    (playerCard === 'Esclave'&& computerCard ==='Empereur' )
-){
-    return"victoire";
-}
-return"défaite";
-}
-export function getInitialHand(camp){
-    if(camp ==='Empereur'){
-          return[ 'Empereur','Citoyen','Citoyen','Citoyen','Citoyen',];
-    }else {
-         return[ 'Esclave','Citoyen','Citoyen','Citoyen','Citoyen',];
-    }
-}
-export function getCampForRound(roundNumber){
-    if(roundNumber<=3)return 'Empereur';
-    if (roundNumber<=6)return'Esclave';
-    if(roundNumber<=9)return'Empereur';
-    return 'Esclave';
-}
-export function getPointsForWin(camp){
-    return camp === 'Empereur'? 1:5;
-}
-export function removeCardsAfterDuel(playerHand,computerHand,playerCardIndex,computerCardIndex){
-const newPlayerHand = [...playerHand];
-const newComputerHand =[...computerHand];
-newPlayerHand.splice(playerCardIndex,1)
-newComputerHand.splice(computerCardIndex,1)
+export const creerMain = camp => camp === "empereur"
+  ? ["empereur", "citoyen", "citoyen", "citoyen", "citoyen"]
+  : camp === "esclave" ? ["esclave", "citoyen", "citoyen", "citoyen", "citoyen"] : [];
 
-return{
-    playerHand: newPlayerHand,
-    computerHand: newComputerHand
-};
+export const choisirCarteAleatoire = main => main.length ? main[Math.floor(Math.random() * main.length)] : null;
+
+export function duel(carteJoueur, carteOrdinateur) {
+  if (carteJoueur === carteOrdinateur) return "égalité";
+  if ((carteJoueur === "empereur" && carteOrdinateur === "citoyen") ||
+      (carteJoueur === "citoyen" && carteOrdinateur === "esclave") ||
+      (carteJoueur === "esclave" && carteOrdinateur === "empereur")) return "victoire";
+  return "défaite";
 }
+
+export const retirerCarte = (main, index) => main.filter((_, cardIndex) => cardIndex !== index);
+export const calculerPoints = camp => camp === "empereur" ? 1 : camp === "esclave" ? 5 : 0;
+export const obtenirCamp = manche => Math.floor((manche - 1) / 3) % 2 === 0 ? "empereur" : "esclave";
+export const obtenirPremierJoueur = numeroDuel => numeroDuel % 2 === 1 ? "empereur" : "esclave";
+export const obtenirGroupe = manche => Math.ceil(manche / 3);

@@ -1,78 +1,70 @@
-
 import { getProfiles, saveProfiles } from "./storage.js";
 
-export function validateNickname(nickname){
-    const trimmedNickname = nickname.trim();
-    const regex = /^[A-Za-z0-9]{3,15}$/;
+export function validateNickname(nickname, playerId = null) {
+  const regex = /^[A-Za-z0-9]{3,15}$/;
 
-    if (!trimmedNickname || !regex.test(trimmedNickname)){
-        return{ valid: false,
-             message : "le pseudo doit contenir entre 3 et 15 caractères(lettres et chiffres uniquement)."
-    };
-    }
-    const profiles= getProfiles();
+  if (!regex.test(nickname)) {
+    return "Le pseudo doit contenir entre 3 et 15 caractères alphanumériques.";
+  }
 
-    const exist = profiles.some(
-        (player)=> player.nickname.toLowerCase() === trimmedNickname.toLowerCase()
-    );
-    if (exist){
-        return{
-            valid:false,
-            message:'ce pseudo est déjà pris.'
-        };
-    }
-    return{valid:true,
-        message:''
-    };
-}
-export function createPlayer(nickname,avatar = '👤'){
-const trimmedNickname=nickname.trim();
-    const validation = validateNickname(trimmedNickname);
+  const profiles = getProfiles();
 
-    if(!validation.valid){
-        throw new Error(validation.message);
-    }
-    const newPlayer = {
-        id: "p_"+ Date.now(),
-        nickname:nickname.trim(),
-        avatar : avatar,
-        createdAt:new Date().toISOString(),
-        gamesPlayed:0
-    };
-    const profiles=getProfiles();
-    profiles.push(newPlayer);
-    saveProfiles(profiles);
-    return newPlayer;
+  const exists = profiles.some(player =>
+    player.nickname.toLowerCase() === nickname.toLowerCase() &&
+    player.id !== playerId
+  );
+
+  if (exists) {
+    return "Ce pseudo existe déjà.";
+  }
+
+  return null;
 }
 
-export function updatedPlayer(id,nickname,avatar){
-    const trimmedNickname=nickname.trim();
-const regex=/^[A-Za-z0-9]{3,15}$/;
+export function createPlayer(nickname, avatar) {
+  const error = validateNickname(nickname);
 
-if(!regex.test(trimmedNickname)){
-    throw new Error("Pseudo invalide :3 à 15 caractères.lettres et chiffres uniquement.")
+  if (error) return { error };
+
+  const profiles = getProfiles();
+
+  const player = {
+    id: "p_" + Date.now(),
+    nickname,
+    avatar,
+    createdAt: new Date().toISOString(),
+    gamesPlayed: 0
+  };
+
+  profiles.push(player);
+  saveProfiles(profiles);
+
+  return { player };
 }
-const profiles=getProfiles();
-const exists=profiles.some(
-    (player)=> player.id !==id && player.nickname.toLowerCase() === trimmedNickname.toLowerCase()
-    );
 
-    if (exists) {
-        throw new Error("Ce pseudo est déjà pris.");
-    }
+export function updatedPlayer(id, nickname, avatar) {
+  const error = validateNickname(nickname, id);
 
-    const index = profiles.findIndex(player => player.id === id);
+  if (error) return { error };
 
-    if (index === -1) {
-        throw new Error("Profil introuvable.");
-    }
+  const profiles = getProfiles();
 
-    profiles[index] = {
-        ...profiles[index],
-        nickname: nickname.trim(),
-        avatar
-    };
+  const index = profiles.findIndex(player => player.id === id);
 
-    saveProfiles(profiles);
-    return profiles[index];
+  if (index === -1) return { error: "Profil introuvable." };
+
+  profiles[index] = {
+    ...profiles[index],
+    nickname,
+    avatar
+  };
+
+  saveProfiles(profiles);
+
+  return { player: profiles[index] };
+}
+
+export function deletePlayer(id) {
+  const profiles = getProfiles().filter(player => player.id !== id);
+  saveProfiles(profiles);
 }

@@ -1,80 +1,76 @@
-import { getCurrentPlayer } from "./storage.js";
+export const $ = selector => document.querySelector(selector);
 
-export function renderCurrentPlayer() {
-
-    const displayElement = document.getElementById(
-        'current-player-display'
-    );
-    if(!displayElement) return;
-
-    const currentPlayer = getCurrentPlayer();
-    if (currentPlayer) {
-        displayElement.textContent = `${currentPlayer.avatar} ${currentPlayer.nickname}`;
-
-        displayElement.className ="text-sm bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full font-medium";
-
-    }else{
-        displayElement.textContent = "Aucun joueur sélectionné";
-
-        displayElement.className = "text-sm bg-slate-700 px-3 py-1 rounded-full text-slate-300";
-    
-    }
+export function makeButton(label, className, onClick) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = className;
+  button.textContent = label;
+  if (onClick) button.addEventListener("click", onClick);
+  return button;
 }
-export function renderProfilesList(
-    profiles,
-    currentPlayerId,
-    onSelect,
-    onEdit,
-    onDelete
-   ){
-    const listContainer=document.getElementById('profiles-list')
 
-    if (!listContainer) return;
-
-    if(profiles.length===0){
-        listContainer.innerHTML=` <p class="text-xs text-slate-400 text-center py-2">  Aucun profil pour le moment.</p> `;
-        return
-    }
-
-   listContainer.innerHTML=profiles.map(player=>{
-
-    const isSelected= player.id === currentPlayerId;
-
-    return`
-    <div class="flex items-center justify-between bg-slate-900 border ${isSelected ? 'border-amber-500': 'border-slate-700'}p-2.5 rounded-lg text-xs">
-
-       <div class ="flex items-center gap-2">
-
-       <span class="text-base">${player.avatar}</span>
-
-       <div>
-         <div class="font-bold text-white">${player.nickname}</div>
-         <div class="text-[10px] text-slate-400">Parties :${player.gamesPlayed || 0}</div>
-     </div>   
-   </div>    
-       <div class ="flex items-center gap-1">
-       <button data-action = "select" data-id ="${player.id}" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-1 rounded transition cursor-pointer font-medium">
-           ${isSelected? 'Actif': 'Choisir'}
-       </button>
-     <button data-action="edit" data-id="${player.id}" class="text-slate-400 hover:text-white px-1.5 py-1 cursor-pointer" title="Modifier">✏️</button>
-     <button data-action="delete" data-id="${player.id}" class="text-red-400 hover:text-red-300 px-1.5 py-1 cursor-pointer" title="Supprimer">🗑️</button>
-    </div>
-</div>
-    `;
-}).join('');
-   
-   listContainer.querySelectorAll('button').forEach(button => {
-const action =button.dataset.action;
-const id = button . dataset.id;
-
-if(action === 'select'){
-    button.onclick =()=> onSelect(id);
+export function renderProfiles(container, countElement, players, activeId, countGames, actions) {
+  countElement.textContent = players.length;
+  container.replaceChildren();
+  if (!players.length) {
+    const empty = document.createElement("p"); empty.className = "app-empty";
+    empty.textContent = "Aucun profil créé pour le moment."; container.append(empty); return;
+  }
+  players.forEach(player => {
+    const row = document.createElement("div"); row.className = "app-player-row";
+    const identity = document.createElement("div"); identity.className = "app-player-identity";
+    const avatar = document.createElement("span"); avatar.className = "app-avatar"; avatar.textContent = player.avatar;
+    const details = document.createElement("div");
+    const name = document.createElement("strong"); name.textContent = player.nickname;
+    const count = document.createElement("small"); count.textContent = `${countGames(player.id)} partie(s)`;
+    details.append(name, count); identity.append(avatar, details);
+    const buttons = document.createElement("div"); buttons.className = "app-actions";
+    const choose = makeButton(activeId === player.id ? "Sélectionné" : "Choisir", "app-small-button", () => actions.choose(player));
+    choose.disabled = activeId === player.id;
+    const edit = makeButton("Modifier", "app-small-button secondary", () => actions.edit(player));
+    const remove = makeButton("Supprimer", "app-small-button danger", () => actions.remove(player));
+    buttons.append(choose, edit, remove); row.append(identity, buttons); container.append(row);
+  });
 }
-if(action === 'edit'){
-    button.onclick =()=> onEdit(id);
+
+export function renderHistory(container, countElement, games, actions) {
+  countElement.textContent = games.length; container.replaceChildren();
+  if (!games.length) {
+    const empty = document.createElement("p"); empty.className = "app-empty";
+    empty.textContent = "Aucune partie ne correspond à votre recherche."; container.append(empty); return;
+  }
+  games.forEach(game => {
+    const row = document.createElement("div"); row.className = "app-history-row";
+    const info = document.createElement("div");
+    const name = document.createElement("strong"); name.textContent = game.nickname;
+    const date = document.createElement("small"); date.textContent = new Date(game.date).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
+    info.append(name, date);
+    const score = document.createElement("strong"); score.className = "app-history-score"; score.textContent = `${game.playerScore} – ${game.computerScore}`;
+    const status = document.createElement("span"); status.className = `app-result-tag ${game.result}`; status.textContent = game.result;
+    const remove = makeButton("Supprimer", "app-small-button danger", () => actions.remove(game));
+    row.append(info, score, status, remove); container.append(row);
+  });
 }
-if(action=== 'delete'){
-    button.onclick = ()=>onDelete(id);
-   }
-   });
+
+export function renderHand(container, cards, disabled, onPlay, labels) {
+  const images = {
+    empereur: "./cards/Empreur.png",
+    citoyen: "./cards/Citoyen.png",
+    esclave: "./cards/Esclave.png"
+  };
+
+  container.replaceChildren();
+
+  cards.forEach((card, index) => {
+    const button = makeButton("", "app-playing-card app-card-button", () => onPlay(index));
+    const image = document.createElement("img");
+
+    image.src = images[card];
+    image.alt = labels[card];
+    image.className = "app-card-image";
+
+    button.append(image);
+    button.disabled = disabled;
+    container.append(button);
+  });
 }

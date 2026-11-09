@@ -1,17 +1,19 @@
-const PROFILES_KEY= "ec_profiles";
-const CURRENT_PLAYER_KEY ="ec_current_player";
-export function getProfiles(){
-    const data =localStorage.getItem(PROFILES_KEY);
-    return data ? JSON.parse(data) : [];
+// Les noms historiques des clés sont conservés pour ne pas perdre les données
+// déjà enregistrées par la première version du projet.
+export function getData(key, fallback = []) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw === null ? fallback : JSON.parse(raw);
+  } catch {
+    return fallback;
+  }
+}
 
-} 
-export function saveProfiles(profiles){
-    localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
+export function saveData(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+  return data;
 }
-export function getCurrentPlayer(){
-    const data = localStorage.getItem(CURRENT_PLAYER_KEY);
-    return data ? JSON.parse(data) : null;
-}
-export function saveCurrentPlayer(player){
-    localStorage.setItem(CURRENT_PLAYER_KEY, JSON.stringify(player));
+
+export function removeData(key) {
+  localStorage.removeItem(key);
 }
